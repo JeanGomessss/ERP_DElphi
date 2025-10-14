@@ -1,0 +1,30 @@
+unit classe.conexao;
+
+interface
+
+uses
+  FireDAC.Comp.Client, FireDAC.Stan.Intf;
+
+type
+  Tconexao = class
+    private
+    FServidor: String;
+    FMsgErro: String;
+    FSenha: String;
+    FBase: String;
+    FLogin: String;
+    FPorta: String;
+    FConexao: TFDConnection;
+    public
+      property Conexao  : TFDConnection Read FConexao Write FConexao;
+      property Servidor : String Read FServidor Write FServidor;
+      property Base     : String Read FBase Write FBase;
+      property Login    : String Read FLogin Write FLogin;
+      property Senha    : String Read FSenha Write FSenha;
+      property Porta    : String Read FPorta Write FPorta;
+      property MsgErro  : String Read FMsgErro Write FMsgErro;
+  end;
+
+implementation
+
+end.

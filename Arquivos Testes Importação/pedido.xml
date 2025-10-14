@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido>
+    <id_cliente>1</id_cliente>
+    <data_pedido>2025-10-13</data_pedido>
+    <valor_total>1500.50</valor_total>
+    <itens>
+        <item>
+            <id_produto>101</id_produto>
+            <quantidade>2</quantidade>
+            <preco_unitario>250.00</preco_unitario>
+            <total>500.00</total>
+            <unidade>UN</unidade>
+        </item>
+        <item>
+            <id_produto>102</id_produto>
+            <quantidade>1</quantidade>
+            <preco_unitario>1000.50</preco_unitario>
+            <total>1000.50</total>
+            <unidade>UN</unidade>
+        </item>
+        <item>
+            <id_produto>103</id_produto>
+            <quantidade>5</quantidade>
+            <preco_unitario>0.00</preco_unitario>
+            <total>0.00</total>
+            <unidade>KG</unidade>
+        </item>
+    </itens>
+</pedido>

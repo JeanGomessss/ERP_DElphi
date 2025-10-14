@@ -1,0 +1,236 @@
+unit uTelaPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
+  Vcl.Imaging.pngimage, Xml.XMLDoc, Xml.XMLIntf, StrUtils, udmDados;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlPrincipal: TPanel;
+    pnlPessoa: TPanel;
+    btnPessoa: TSpeedButton;
+    pnlProduto: TPanel;
+    btnProduto: TSpeedButton;
+    pnlPedido: TPanel;
+    btnPedido: TSpeedButton;
+    Image1: TImage;
+    Panel1: TPanel;
+    SpeedButton1: TSpeedButton;
+    procedure btnProdutoClick(Sender: TObject);
+    procedure btnPessoaClick(Sender: TObject);
+    procedure btnPedidoClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses uProdutos, uPessoas, uPedido, uLogSistema;
+
+procedure TfrmPrincipal.btnPedidoClick(Sender: TObject);
+begin
+  frmPedido := TfrmPedido.Create(nil);
+  frmPedido.ShowModal;
+  frmPedido.Free;
+end;
+
+procedure TfrmPrincipal.btnPessoaClick(Sender: TObject);
+begin
+  frmPessoas := TfrmPessoas.Create(nil);
+  frmPessoas.ShowModal;
+  frmPessoas.Free;
+end;
+
+procedure TfrmPrincipal.btnProdutoClick(Sender: TObject);
+begin
+  frmProdutos := TfrmProdutos.Create(nil);
+  frmProdutos.ShowModal;
+  frmProdutos.Free;
+end;
+
+procedure TfrmTelaPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if DMDados.UsuarioLogado <> '' then
+    GravaLog(DMDados.UsuarioLogado, 'LOGOUT', 'USUARIO', 0, 'Usuário saiu do sistema.');
+end;
+
+procedure TfrmPrincipal.SpeedButton1Click(Sender: TObject);
+var
+  dlgOpen: TOpenDialog;
+  arq: TextFile;
+  linha, ext, sArquivo: string;
+  colunas: TArray<string>;
+  XMLDoc: IXMLDocument;
+  pedidoNode, itemNode, itensNode: IXMLNode;
+  idPedidoGerado: Integer;
+  idCliente: Integer;
+  dtPedido: TDateTime;
+  totalPedido, qt, preco, totalItem: Double;
+  lendoItens: Boolean;
+  i: Integer;
+begin
+  dlgOpen := TOpenDialog.Create(nil);
+  try
+    dlgOpen.Filter := 'Arquivos (*.csv;*.txt;*.xml)|*.csv;*.txt;*.xml';
+    dlgOpen.Title := 'Selecione o arquivo de importação do pedido';
+    if not dlgOpen.Execute then Exit;
+
+    sArquivo := dlgOpen.FileName;
+    ext := LowerCase(ExtractFileExt(sArquivo));
+
+    // --- Inicia transação ---
+    dmDados.FDConnection.StartTransaction;
+    try
+      if (ext = '.csv') or (ext = '.txt') then
+      begin
+        AssignFile(arq, sArquivo);
+        Reset(arq);
+
+        lendoItens := False;
+        totalPedido := 0;
+
+        while not Eof(arq) do
+        begin
+          ReadLn(arq, linha);
+          linha := Trim(linha);
+
+          if (linha = '') or (linha.StartsWith('#')) then
+          begin
+            if SameText(linha, '#ITENS') then
+              lendoItens := True;
+            Continue;
+          end;
+
+          colunas := linha.Split([';']);
+
+          if not lendoItens then
+          begin
+            // --- Dados do pedido ---
+            idCliente := StrToIntDef(colunas[0],0);
+            dtPedido := StrToDateDef(colunas[1],Now);
+
+            // Insere pedido com valor temporário zero (será atualizado depois)
+            dmDados.QImportar.Close;
+            dmDados.QImportar.SQL.Text :=
+              'INSERT INTO PEDIDO (ID_PESSOA, DATA, TOTAL) ' +
+              'VALUES (:ID_PESSOA, :DATA_PEDIDO, 0) RETURNING ID';
+            dmDados.QImportar.ParamByName('ID_PESSOA').AsInteger := idCliente;
+            dmDados.QImportar.ParamByName('DATA_PEDIDO').AsDate := dtPedido;
+            dmDados.QImportar.Open;
+            idPedidoGerado := dmDados.QImportar.FieldByName('ID').AsInteger;
+          end
+          else
+          begin
+            // --- Itens ---
+            qt := StrToFloatDef(colunas[1],0);
+            preco := StrToFloatDef(colunas[2],0);
+            totalItem := qt * preco;
+            totalPedido := totalPedido + totalItem;
+
+            dmDados.QImportar.Close;
+            dmDados.QImportar.SQL.Text :=
+              'INSERT INTO PEDIDO_ITEM (ID_PEDIDO, ID_PRODUTO, QUANTIDADE, PRECO_UNITARIO, TOTAL, UNIDADE) ' +
+              'VALUES (:ID_PEDIDO, :ID_PRODUTO, :QUANTIDADE, :PRECO_UNITARIO, :TOTAL, :UNIDADE)';
+            dmDados.QImportar.ParamByName('ID_PEDIDO').AsInteger := idPedidoGerado;
+            dmDados.QImportar.ParamByName('ID_PRODUTO').AsInteger := StrToIntDef(colunas[0],0);
+            dmDados.QImportar.ParamByName('QUANTIDADE').AsFloat := qt;
+            dmDados.QImportar.ParamByName('PRECO_UNITARIO').AsFloat := preco;
+            dmDados.QImportar.ParamByName('TOTAL').AsFloat := totalItem;
+            dmDados.QImportar.ParamByName('UNIDADE').AsString := colunas[4];
+            dmDados.QImportar.ExecSQL;
+          end;
+        end;
+
+        CloseFile(arq);
+
+        // Atualiza pedido com total calculado
+        dmDados.QImportar.Close;
+        dmDados.QImportar.SQL.Text := 'UPDATE PEDIDO SET TOTAL = :VALOR_TOTAL WHERE ID = :ID_PEDIDO';
+        dmDados.QImportar.ParamByName('VALOR_TOTAL').AsFloat := totalPedido;
+        dmDados.QImportar.ParamByName('ID_PEDIDO').AsInteger := idPedidoGerado;
+        dmDados.QImportar.ExecSQL;
+      end
+      else if (ext = '.xml') then
+      begin
+        XMLDoc := LoadXMLDocument(sArquivo);
+        pedidoNode := XMLDoc.DocumentElement;
+
+        idCliente := pedidoNode.ChildNodes['id_cliente'].NodeValue;
+        dtPedido := StrToDateDef(pedidoNode.ChildNodes['data_pedido'].NodeValue,Now);
+        totalPedido := 0;
+
+        // Insere pedido com valor temporário zero
+        dmDados.QImportar.Close;
+        dmDados.QImportar.SQL.Text :=
+          'INSERT INTO PEDIDO (ID_PESSOA, DATA, TOTAL) ' +
+          'VALUES (:ID_PESSOA, :DATA_PEDIDO, 0) RETURNING ID';
+        dmDados.QImportar.ParamByName('ID_PESSOA').AsInteger := idCliente;
+        dmDados.QImportar.ParamByName('DATA_PEDIDO').AsDate := dtPedido;
+        dmDados.QImportar.Open;
+        idPedidoGerado := dmDados.QImportar.FieldByName('ID').AsInteger;
+
+        // --- Itens ---
+        itensNode := pedidoNode.ChildNodes.FindNode('itens');
+        if Assigned(itensNode) then
+        begin
+          for i := 0 to itensNode.ChildNodes.Count-1 do
+          begin
+            itemNode := itensNode.ChildNodes[i];
+            qt := itemNode.ChildNodes['quantidade'].NodeValue;
+            preco := itemNode.ChildNodes['preco_unitario'].NodeValue;
+            totalItem := qt * preco;
+            totalPedido := totalPedido + totalItem;
+
+            dmDados.QImportar.Close;
+            dmDados.QImportar.SQL.Text :=
+              'INSERT INTO PEDIDO_ITEM (ID_PEDIDO, ID_PRODUTO, QUANTIDADE, PRECO_UNITARIO, TOTAL, UNIDADE) ' +
+              'VALUES (:ID_PEDIDO, :ID_PRODUTO, :QUANTIDADE, :PRECO_UNITARIO, :TOTAL, :UNIDADE)';
+            dmDados.QImportar.ParamByName('ID_PEDIDO').AsInteger := idPedidoGerado;
+            dmDados.QImportar.ParamByName('ID_PRODUTO').AsInteger := itemNode.ChildNodes['id_produto'].NodeValue;
+            dmDados.QImportar.ParamByName('QUANTIDADE').AsFloat := qt;
+            dmDados.QImportar.ParamByName('PRECO_UNITARIO').AsFloat := preco;
+            dmDados.QImportar.ParamByName('TOTAL').AsFloat := totalItem;
+            dmDados.QImportar.ParamByName('UNIDADE').AsString := itemNode.ChildNodes['unidade'].NodeValue;
+            dmDados.QImportar.ExecSQL;
+          end;
+        end;
+
+        // Atualiza pedido com total calculado
+        dmDados.QImportar.Close;
+        dmDados.QImportar.SQL.Text := 'UPDATE PEDIDO SET TOTAL = :VALOR_TOTAL WHERE ID = :ID_PEDIDO';
+        dmDados.QImportar.ParamByName('VALOR_TOTAL').AsFloat := totalPedido;
+        dmDados.QImportar.ParamByName('ID_PEDIDO').AsInteger := idPedidoGerado;
+        dmDados.QImportar.ExecSQL;
+      end
+      else
+        raise Exception.Create('Formato de arquivo não suportado.');
+
+      // --- Commit final ---
+      dmDados.FDConnection.Commit;
+      ShowMessage('Pedidos importados com sucesso!');
+    except
+      on E: Exception do
+      begin
+        dmDados.FDConnection.Rollback;
+        ShowMessage('Erro ao importar pedidos: ' + E.Message);
+      end;
+    end;
+
+  finally
+    dlgOpen.Free;
+  end;
+end;
+
+end.

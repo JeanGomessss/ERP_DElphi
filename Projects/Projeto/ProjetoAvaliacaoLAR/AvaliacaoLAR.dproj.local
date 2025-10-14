@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/10/11 09:16:51.000.447,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 09:17:10.000.652,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2025/10/11 10:12:20.000.636,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\AvaliacaoLAR.dproj=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2025/10/11 10:13:01.000.462,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\frmPrincipal.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 10:13:01.000.462,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\frmPrincipal.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/10/11 10:13:41.000.119,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\udmDados.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>2025/10/11 10:13:41.000.119,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\udmDados.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2025/10/11 10:13:47.000.390,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\AvaliacaoLAR.dproj=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\AvaliacaoLAR.dproj</Transaction>
+    <Transaction>2025/10/11 10:17:11.000.503,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit2.pas</Transaction>
+    <Transaction>2025/10/11 11:01:39.000.011,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLogin.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit2.pas</Transaction>
+    <Transaction>2025/10/11 11:01:39.000.011,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLogin.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit2.dfm</Transaction>
+    <Transaction>2025/10/11 11:05:50.000.422,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas=</Transaction>
+    <Transaction>2025/10/11 11:06:03.000.834,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas</Transaction>
+    <Transaction>2025/10/11 11:06:11.000.872,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas=</Transaction>
+    <Transaction>2025/10/11 11:06:45.000.958,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 11:07:08.000.277,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.dfm</Transaction>
+    <Transaction>2025/10/11 11:07:08.000.277,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 11:09:52.000.185,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas=</Transaction>
+    <Transaction>2025/10/11 14:11:14.000.110,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLogin.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLoginAcessar.dfm</Transaction>
+    <Transaction>2025/10/11 14:11:14.000.110,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLogin.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLoginAcessar.pas</Transaction>
+    <Transaction>2025/10/11 14:12:15.000.710,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas</Transaction>
+    <Transaction>2025/10/11 14:12:27.000.383,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmTelaPrincipal.dfm</Transaction>
+    <Transaction>2025/10/11 14:12:27.000.383,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmPrincipal.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmTelaPrincipal.pas</Transaction>
+    <Transaction>2025/10/11 14:41:43.000.394,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmTelaPrincipal.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\urmTelaPrincipal.pas</Transaction>
+    <Transaction>2025/10/11 14:41:43.000.394,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmTelaPrincipal.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\urmTelaPrincipal.dfm</Transaction>
+    <Transaction>2025/10/11 14:42:05.000.815,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLoginAcessar.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uLoginAcessar.pas</Transaction>
+    <Transaction>2025/10/11 14:42:05.000.815,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\TfrmLoginAcessar.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uLoginAcessar.dfm</Transaction>
+    <Transaction>2025/10/11 14:42:13.000.030,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\urmTelaPrincipal.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uTelaPrincipal.dfm</Transaction>
+    <Transaction>2025/10/11 14:42:13.000.030,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\urmTelaPrincipal.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uTelaPrincipal.pas</Transaction>
+    <Transaction>2025/10/11 14:47:02.000.865,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 14:47:43.000.665,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\classe.conexao.pas</Transaction>
+    <Transaction>2025/10/11 15:51:26.000.830,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/11 15:53:03.000.563,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uConfigServidor.pas</Transaction>
+    <Transaction>2025/10/11 15:53:03.000.563,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uConfigServidor.dfm</Transaction>
+    <Transaction>2025/10/12 11:53:40.000.732,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uConfigServidor.pas=</Transaction>
+    <Transaction>2025/10/12 11:53:40.000.794,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\classe.conexao.pas=</Transaction>
+    <Transaction>2025/10/12 12:36:04.000.838,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/12 12:36:48.000.140,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uProdutos.pas</Transaction>
+    <Transaction>2025/10/12 12:36:48.000.140,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uProdutos.dfm</Transaction>
+    <Transaction>2025/10/12 12:42:24.000.458,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/12 12:42:38.000.201,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPessoas.dfm</Transaction>
+    <Transaction>2025/10/12 12:42:38.000.201,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPessoas.pas</Transaction>
+    <Transaction>2025/10/12 12:42:53.000.243,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/12 12:43:04.000.717,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPedidos.pas</Transaction>
+    <Transaction>2025/10/12 12:43:04.000.717,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.dfm=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPedidos.dfm</Transaction>
+    <Transaction>2025/10/13 13:14:34.495,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPedido.pas</Transaction>
+    <Transaction>2025/10/13 13:15:57.553,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uPedidos.pas=</Transaction>
+    <Transaction>2025/10/13 20:41:38.454,=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+    <Transaction>2025/10/13 20:41:52.911,C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\uLogSistema.pas=C:\Users\jeang\Documents\Embarcadero\Studio\Projects\ProjetoAvaliacaoLAR\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

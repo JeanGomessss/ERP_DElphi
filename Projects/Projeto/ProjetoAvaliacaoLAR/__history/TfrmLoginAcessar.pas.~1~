@@ -1,0 +1,53 @@
+unit TfrmLoginAcessar;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Imaging.pngimage, Vcl.ExtCtrls,
+  Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TfrmLogin = class(TForm)
+    pnlFundo: TPanel;
+    pnlLateral: TPanel;
+    lblBemVindo: TLabel;
+    lblCandidatoAvaliacao: TLabel;
+    imgLogoEmpresa: TImage;
+    pnlUsuario: TPanel;
+    lblUsuario: TLabel;
+    txtUsuario: TEdit;
+    pnlLinhaUsuario: TPanel;
+    pnlSenha: TPanel;
+    lblSenha: TLabel;
+    txtSenha: TEdit;
+    pnlLinhaSenha: TPanel;
+    pnlBotaoConfirma: TPanel;
+    btnConfirma: TSpeedButton;
+    btnFechar: TSpeedButton;
+    procedure btnFecharClick(Sender: TObject);
+    procedure btnConfirmaClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmLogin: TfrmLogin;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmLogin.btnConfirmaClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmLogin.btnFecharClick(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+end.

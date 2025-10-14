@@ -1,0 +1,231 @@
+﻿unit uPedido;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, Vcl.Buttons, uDMDados;
+
+type
+  TfrmPedido = class(TForm)
+    pnlTopo: TPanel;
+    lblTitulo: TLabel;
+    pnlBotoes: TPanel;
+    pnlNovo: TPanel;
+    pnlGravar: TPanel;
+    pnlCancelar: TPanel;
+    btnNovo: TSpeedButton;
+    btnGravar: TSpeedButton;
+    btnCancelar: TSpeedButton;
+    pnlDados: TPanel;
+    lblPedido: TLabel;
+    lblCliente: TLabel;
+    lblData: TLabel;
+    lblTotal: TLabel;
+    dbIdPedido: TDBEdit;
+    dbIdCliente: TDBEdit;
+    txtClienteNome: TEdit;
+    dbData: TDBEdit;
+    dbTotal: TDBEdit;
+    grpItens: TGroupBox;
+    grdItens: TDBGrid;
+    pnlItens: TPanel;
+    btnAddItem: TSpeedButton;
+    btnRemoverItem: TSpeedButton;
+    dsPedido: TDataSource;
+    dsPedidoItem: TDataSource;
+    dsPessoa: TDataSource;
+    dsProduto: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnAddItemClick(Sender: TObject);
+    procedure btnRemoverItemClick(Sender: TObject);
+    procedure dbIdClienteExit(Sender: TObject);
+    procedure grdItensColExit(Sender: TObject);
+    procedure dbIdClienteKeyPress(Sender: TObject; var Key: Char);
+  private
+    procedure AtualizaTotal;
+  public
+  end;
+
+var
+  frmPedido: TfrmPedido;
+
+implementation
+
+{$R *.dfm}
+
+uses uLogSistema;
+
+procedure TfrmPedido.FormCreate(Sender: TObject);
+begin
+  dsPedido.DataSet := DMDados.QPedido;
+  dsPedidoItem.DataSet := DMDados.QPedidoItem;
+  dsPessoa.DataSet := DMDados.QPessoa;
+  dsProduto.DataSet := DMDados.QProduto;
+
+  DMDados.QPessoa.Open;
+  DMDados.QProduto.Open;
+end;
+
+procedure TfrmPedido.btnNovoClick(Sender: TObject);
+begin
+  DMDados.QPedido.Open;
+  DMDados.QPedido.Append;
+  DMDados.QPedido.FieldByName('DATA').AsDateTime := Date;
+  DMDados.QPedido.FieldByName('TOTAL').AsFloat := 0;
+  txtClienteNome.Clear;
+
+  DMDados.QPedidoItem.ParamByName('ID_PEDIDO').AsInteger := -1; // evita mostrar itens antigos
+
+  // LOG
+  GravaLog(DMDados.UsuarioLogado, 'NOVO_PEDIDO', 'PEDIDO', -1, 'Pedido iniciado');
+end;
+
+procedure TfrmPedido.btnGravarClick(Sender: TObject);
+begin
+  DMDados.QPedidoItem.FieldByName('TOTAL').AsFloat := DMDados.QPedido.FieldByName('TOTAL').asFloat;
+  DMDados.QPedido.Post;
+  DMDados.QPedido.ApplyUpdates(0);
+  DMDados.QPedidoItem.ApplyUpdates(0);
+  ShowMessage('Pedido gravado com sucesso!');
+
+  // LOG
+  GravaLog(DMDados.UsuarioLogado, 'GRAVAR_PEDIDO', 'PEDIDO', DMDados.QPedido.FieldByName('ID').AsInteger,
+    'Pedido gravado com total ' + FloatToStr(DMDados.QPedido.FieldByName('TOTAL').AsFloat));
+end;
+
+procedure TfrmPedido.btnCancelarClick(Sender: TObject);
+begin
+  // LOG antes de cancelar
+  if not DMDados.QPedido.IsEmpty then
+    GravaLog(DMDados.UsuarioLogado, 'CANCELAR_PEDIDO', 'PEDIDO', DMDados.QPedido.FieldByName('ID').AsInteger,
+      'Pedido cancelado');
+
+  DMDados.QPedido.Cancel;
+  DMDados.QPedidoItem.CancelUpdates;
+  txtClienteNome.Clear;
+end;
+
+procedure TfrmPedido.btnAddItemClick(Sender: TObject);
+begin
+  DMDados.QPedidoItem.Open;
+  grdItens.Columns[0].Title.Caption := 'Código';
+  grdItens.Columns[1].Title.Caption := 'Pedido';
+  grdItens.Columns[2].Title.Caption := 'Produto';
+  grdItens.Columns[3].Title.Caption := 'Quantidade';
+  grdItens.Columns[4].Title.Caption := 'Preço Unitário';
+  grdItens.Columns[5].Title.Caption := 'Unidade';
+  grdItens.Columns[6].Title.Caption := 'Total';
+
+
+  DMDados.QPedidoItem.Append;
+  DMDados.QPedidoItem.FieldByName('ID_PEDIDO').AsInteger :=
+    DMDados.QPedido.FieldByName('ID').AsInteger;
+
+  // LOG
+  GravaLog(DMDados.UsuarioLogado, 'ADICIONAR_ITEM', 'PEDIDO_ITEM', DMDados.QPedidoItem.FieldByName('ID').AsInteger,
+    'Item adicionado ao pedido ' + DMDados.QPedido.FieldByName('ID').AsString);
+end;
+
+procedure TfrmPedido.btnRemoverItemClick(Sender: TObject);
+var
+  IdItem: Integer;
+begin
+  if not DMDados.QPedidoItem.IsEmpty then
+  begin
+    IdItem := DMDados.QPedidoItem.FieldByName('ID').AsInteger;
+
+    DMDados.QPedidoItem.Delete;
+    AtualizaTotal;
+
+    // LOG
+    GravaLog(DMDados.UsuarioLogado, 'REMOVER_ITEM', 'PEDIDO_ITEM', IdItem,
+      'Item removido do pedido ' + DMDados.QPedido.FieldByName('ID').AsString);
+  end;
+end;
+
+procedure TfrmPedido.dbIdClienteExit(Sender: TObject);
+var
+  CodigoCliente: Integer;
+begin
+  if Trim(dbIdCliente.Text) = '' then
+  begin
+    txtClienteNome.Clear;
+    Exit;
+  end;
+
+  CodigoCliente := StrToIntDef(dbIdCliente.Text, 0);
+
+  if DMDados.QPessoa.Locate('ID', CodigoCliente, []) then
+  begin
+    txtClienteNome.Text := DMDados.QPessoa.FieldByName('NOME').AsString;
+
+    // LOG
+    GravaLog(DMDados.UsuarioLogado, 'ALTERAR_CLIENTE', 'PEDIDO', DMDados.QPedido.FieldByName('ID').AsInteger,
+      'Cliente definido: ' + txtClienteNome.Text);
+  end
+  else
+  begin
+    txtClienteNome.Text := '';
+    ShowMessage('Cliente não encontrado!');
+    dbIdCliente.SetFocus;
+  end;
+end;
+
+procedure TfrmPedido.dbIdClienteKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then
+  begin
+    grdItens.setfocus;
+  end;
+end;
+
+procedure TfrmPedido.grdItensColExit(Sender: TObject);
+var
+  ProdutoID: Integer;
+begin
+  if grdItens.SelectedField.FieldName = 'ID_PRODUTO' then
+  begin
+    ProdutoID := DMDados.QPedidoItem.FieldByName('ID_PRODUTO').AsInteger;
+    if DMDados.QProduto.Locate('ID', ProdutoID, []) then
+    begin
+      DMDados.QPedidoItem.FieldByName('PRECO_UNITARIO').AsFloat := DMDados.QProduto.FieldByName('PRECO').AsFloat;
+      DMDados.QPedidoItem.FieldByName('UNIDADE').AsString := DMDados.QProduto.FieldByName('UNIDADE').AsString;
+
+      // LOG
+      GravaLog(DMDados.UsuarioLogado, 'ALTERAR_PRODUTO', 'PEDIDO_ITEM', DMDados.QPedidoItem.FieldByName('ID').AsInteger,
+        'Produto alterado para ID ' + IntToStr(ProdutoID));
+    end;
+  end;
+
+  AtualizaTotal;
+end;
+
+procedure TfrmPedido.AtualizaTotal;
+var
+  Total: Double;
+begin
+  Total := 0;
+  DMDados.QPedidoItem.DisableControls;
+  try
+    DMDados.QPedidoItem.First;
+    while not DMDados.QPedidoItem.Eof do
+    begin
+      Total := Total + ((DMDados.QPedidoItem.FieldByName('PRECO_UNITARIO').AsFloat) * (DMDados.QPedidoItem.FieldByName('QUANTIDADE').asFloat));
+      DMDados.QPedidoItem.Next;
+    end;
+  finally
+    DMDados.QPedidoItem.EnableControls;
+  end;
+  DMDados.QPedidoItem.Edit;
+  DMDados.QPedidoItem.FieldByName('TOTAL').AsFloat := Total;
+  DMDados.QPedido.Edit;
+  DMDados.QPedido.FieldByName('TOTAL').AsFloat := Total;
+  dbTotal.Refresh;
+end;
+
+end.

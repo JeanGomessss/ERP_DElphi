@@ -1,0 +1,67 @@
+unit udmDados;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Phys.FBDef, FireDAC.UI.Intf,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.Comp.UI, FireDAC.Phys.IBBase;
+
+type
+  TDMDados = class(TDataModule)
+    FDPhysFBDriverLink: TFDPhysFBDriverLink;
+    FDGUIxWaitCursor: TFDGUIxWaitCursor;
+    FDConnection: TFDConnection;
+    QUsuario: TFDQuery;
+    QUsuarioID: TIntegerField;
+    QUsuarioNOME: TStringField;
+    QUsuarioLOGIN: TStringField;
+    QUsuarioSENHA: TStringField;
+    QPessoa: TFDQuery;
+    QProduto: TFDQuery;
+    QPedido: TFDQuery;
+    QPedidoItem: TFDQuery;
+    QPessoaID: TIntegerField;
+    QPessoaNOME: TStringField;
+    QPessoaCPF_CNPJ: TStringField;
+    QProdutoID: TIntegerField;
+    QProdutoDESCRICAO: TStringField;
+    QProdutoPRECO: TFMTBCDField;
+    QPedidoID: TIntegerField;
+    QPedidoID_PESSOA: TIntegerField;
+    QPedidoDATA: TDateField;
+    QPedidoTOTAL: TFMTBCDField;
+    QPedidoItemID: TIntegerField;
+    QPedidoItemID_PEDIDO: TIntegerField;
+    QPedidoItemID_PRODUTO: TIntegerField;
+    QPedidoItemQUANTIDADE: TFMTBCDField;
+    QPedidoItemPRECO_UNITARIO: TFMTBCDField;
+    QProdutoUNIDADE: TStringField;
+    QPessoaFL_FISICA_JURIDICA: TStringField;
+    QPessoaTELEFONE: TStringField;
+    QPessoaENDERECO: TStringField;
+    procedure QPessoaNewRecord(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DMDados: TDMDados;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDMDados.QPessoaNewRecord(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('fl_fisica_juridica').AsString := 'F';
+end;
+
+end.

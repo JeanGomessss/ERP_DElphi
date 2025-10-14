@@ -1,0 +1,200 @@
+object frmPessoas: TfrmPessoas
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro de Pessoas'
+  ClientHeight = 173
+  ClientWidth = 605
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  TextHeight = 15
+  object lblId: TLabel
+    Left = 16
+    Top = 24
+    Width = 39
+    Height = 15
+    Caption = 'C'#243'digo'
+  end
+  object Label1: TLabel
+    Left = 88
+    Top = 24
+    Width = 33
+    Height = 15
+    Caption = 'Nome'
+  end
+  object Label3: TLabel
+    Left = 359
+    Top = 24
+    Width = 53
+    Height = 15
+    Caption = 'CPF/CNPJ'
+  end
+  object Label2: TLabel
+    Left = 16
+    Top = 72
+    Width = 45
+    Height = 15
+    Caption = 'Telefone'
+  end
+  object Label4: TLabel
+    Left = 159
+    Top = 72
+    Width = 76
+    Height = 15
+    Caption = 'Rua e N'#250'mero'
+  end
+  object DBEdit1: TDBEdit
+    Left = 16
+    Top = 45
+    Width = 66
+    Height = 23
+    DataField = 'ID'
+    DataSource = DSPessoas
+    ParentColor = True
+    ReadOnly = True
+    TabOrder = 4
+  end
+  object DBEdit2: TDBEdit
+    Left = 88
+    Top = 45
+    Width = 265
+    Height = 23
+    DataField = 'NOME'
+    DataSource = DSPessoas
+    TabOrder = 0
+  end
+  object DBEdit4: TDBEdit
+    Left = 359
+    Top = 45
+    Width = 122
+    Height = 23
+    DataField = 'CPF_CNPJ'
+    DataSource = DSPessoas
+    TabOrder = 1
+  end
+  object DBEdit3: TDBEdit
+    Left = 16
+    Top = 93
+    Width = 137
+    Height = 23
+    DataField = 'TELEFONE'
+    DataSource = DSPessoas
+    TabOrder = 2
+  end
+  object DBEdit5: TDBEdit
+    Left = 159
+    Top = 93
+    Width = 436
+    Height = 23
+    DataField = 'ENDERECO'
+    DataSource = DSPessoas
+    TabOrder = 3
+    OnKeyPress = DBEdit5KeyPress
+  end
+  object pnlInserir: TPanel
+    Left = 15
+    Top = 130
+    Width = 185
+    Height = 41
+    BevelOuter = bvNone
+    Color = clSilver
+    ParentBackground = False
+    TabOrder = 5
+    object btnInserir: TSpeedButton
+      Left = 0
+      Top = 0
+      Width = 185
+      Height = 41
+      Align = alClient
+      Caption = 'Inserir'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = btnInserirClick
+      ExplicitLeft = 4
+      ExplicitTop = -7
+    end
+  end
+  object Panel2: TPanel
+    Left = 210
+    Top = 130
+    Width = 185
+    Height = 41
+    BevelOuter = bvNone
+    Color = clLime
+    ParentBackground = False
+    TabOrder = 6
+    object btnGravar: TSpeedButton
+      Left = 0
+      Top = 0
+      Width = 185
+      Height = 41
+      Align = alClient
+      Caption = 'Gravar'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = btnGravarClick
+      ExplicitLeft = -4
+      ExplicitTop = -8
+    end
+  end
+  object Panel1: TPanel
+    Left = 410
+    Top = 130
+    Width = 185
+    Height = 41
+    BevelOuter = bvNone
+    Color = 5460989
+    ParentBackground = False
+    TabOrder = 7
+    object btnExcluirCancelar: TSpeedButton
+      Left = 0
+      Top = 0
+      Width = 185
+      Height = 41
+      Align = alClient
+      Caption = 'Excluir'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = btnExcluirCancelarClick
+      ExplicitLeft = 72
+      ExplicitTop = 24
+      ExplicitWidth = 23
+      ExplicitHeight = 22
+    end
+  end
+  object chkJuridica: TDBCheckBox
+    Left = 487
+    Top = 48
+    Width = 97
+    Height = 17
+    Caption = 'Jur'#237'dica'
+    DataField = 'FL_FISICA_JURIDICA'
+    DataSource = DSPessoas
+    TabOrder = 8
+    OnClick = chkJuridicaClick
+  end
+  object DSPessoas: TDataSource
+    DataSet = DMDados.QPessoa
+    OnStateChange = DSPessoasStateChange
+    Left = 272
+    Top = 24
+  end
+end

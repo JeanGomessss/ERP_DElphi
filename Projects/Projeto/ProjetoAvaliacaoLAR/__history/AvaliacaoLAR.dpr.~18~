@@ -1,0 +1,24 @@
+program AvaliacaoLAR;
+
+uses
+  Vcl.Forms,
+  udmDados in 'udmDados.pas' {DMDados: TDataModule},
+  uLoginAcessar in 'uLoginAcessar.pas' {frmLogin},
+  uTelaPrincipal in 'uTelaPrincipal.pas' {frmPrincipal};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDMDados, DMDados);
+  frmLogin := TfrmLogin.Create(nil);
+  frmLogin.ShowModal;
+
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+
+  frmLogin.Hide;
+  frmLogin.Free;
+
+  Application.Run;
+end.

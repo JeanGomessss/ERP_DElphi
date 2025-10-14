@@ -1,0 +1,248 @@
+object DMDados: TDMDados
+  Height = 480
+  Width = 640
+  object FDPhysFBDriverLink: TFDPhysFBDriverLink
+    VendorLib = 'C:\Program Files\Firebird\Firebird_3_0\WOW64\fbclient.dll'
+    Left = 224
+    Top = 64
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 360
+    Top = 64
+  end
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=C:\DataBase\AVALIACAOLAR.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Server=127.0.0.1'
+      'Port=3050'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 96
+    Top = 64
+  end
+  object QUsuario: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'select * from usuario where login = :login and senha = :senha;')
+    Left = 96
+    Top = 160
+    ParamData = <
+      item
+        Name = 'LOGIN'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = 'SENHA'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object QUsuarioID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object QUsuarioNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = [pfInUpdate]
+      Size = 100
+    end
+    object QUsuarioLOGIN: TStringField
+      FieldName = 'LOGIN'
+      Origin = 'LOGIN'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object QUsuarioSENHA: TStringField
+      FieldName = 'SENHA'
+      Origin = 'SENHA'
+      ProviderFlags = [pfInUpdate]
+      Size = 255
+    end
+  end
+  object QPessoa: TFDQuery
+    CachedUpdates = True
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvFetchGeneratorsPoint, uvGeneratorName]
+    UpdateOptions.FetchGeneratorsPoint = gpImmediate
+    UpdateOptions.GeneratorName = 'GEN_PESSOA_ID'
+    UpdateOptions.KeyFields = 'ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'select * from pessoa;')
+    Left = 96
+    Top = 216
+    object QPessoaID: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object QPessoaNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Size = 100
+    end
+    object QPessoaCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      EditMask = '999.999.999-99;1;_'
+    end
+    object QPessoaTELEFONE: TStringField
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      EditMask = '(99) 99999-9999;1;_'
+    end
+    object QPessoaENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      Size = 150
+    end
+    object QPessoaFL_FISICA_JURIDICA: TBooleanField
+      FieldName = 'FL_FISICA_JURIDICA'
+      Origin = 'FL_FISICA_JURIDICA'
+    end
+  end
+  object QProduto: TFDQuery
+    CachedUpdates = True
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvFetchGeneratorsPoint, uvGeneratorName]
+    UpdateOptions.FetchGeneratorsPoint = gpImmediate
+    UpdateOptions.GeneratorName = 'GEN_PRODUTO_ID'
+    UpdateOptions.KeyFields = 'ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'select * from produto;')
+    Left = 96
+    Top = 280
+    object QProdutoID: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      MaxValue = 999999
+      MinValue = 1
+    end
+    object QProdutoDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 100
+    end
+    object QProdutoPRECO: TFMTBCDField
+      FieldName = 'PRECO'
+      Origin = 'PRECO'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object QProdutoUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+    end
+  end
+  object QPedido: TFDQuery
+    CachedUpdates = True
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvFetchGeneratorsPoint, uvGeneratorName]
+    UpdateOptions.FetchGeneratorsPoint = gpImmediate
+    UpdateOptions.GeneratorName = 'GEN_PEDIDO_ID'
+    UpdateOptions.KeyFields = 'ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'select * from pedido;')
+    Left = 96
+    Top = 328
+    object QPedidoID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QPedidoID_PESSOA: TIntegerField
+      FieldName = 'ID_PESSOA'
+      Origin = 'ID_PESSOA'
+    end
+    object QPedidoDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+    end
+    object QPedidoTOTAL: TFMTBCDField
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object QPedidoItem: TFDQuery
+    CachedUpdates = True
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvFetchGeneratorsPoint, uvGeneratorName]
+    UpdateOptions.FetchGeneratorsPoint = gpImmediate
+    UpdateOptions.GeneratorName = 'GEN_PEDIDO_ITEM_ID'
+    UpdateOptions.KeyFields = 'ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      'select * from pedido_item where id_pedido = :id_pedido;')
+    Left = 96
+    Top = 384
+    ParamData = <
+      item
+        Name = 'ID_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object QPedidoItemID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QPedidoItemID_PEDIDO: TIntegerField
+      FieldName = 'ID_PEDIDO'
+      Origin = 'ID_PEDIDO'
+    end
+    object QPedidoItemID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
+    end
+    object QPedidoItemQUANTIDADE: TFMTBCDField
+      FieldName = 'QUANTIDADE'
+      Origin = 'QUANTIDADE'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object QPedidoItemPRECO_UNITARIO: TFMTBCDField
+      FieldName = 'PRECO_UNITARIO'
+      Origin = 'PRECO_UNITARIO'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object QPedidoItemUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+    end
+    object QPedidoItemTOTAL: TFMTBCDField
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
+    end
+  end
+  object QImportar: TFDQuery
+    Connection = FDConnection
+    Left = 216
+    Top = 160
+  end
+end

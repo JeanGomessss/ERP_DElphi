@@ -1,0 +1,142 @@
+unit uPessoas;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask,
+  Vcl.ExtCtrls, Vcl.Buttons, Data.DB;
+
+type
+  TfrmPessoas = class(TForm)
+    lblId: TLabel;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    Label1: TLabel;
+    DBEdit4: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label2: TLabel;
+    DBEdit5: TDBEdit;
+    Label4: TLabel;
+    pnlInserir: TPanel;
+    btnInserir: TSpeedButton;
+    Panel2: TPanel;
+    btnGravar: TSpeedButton;
+    Panel1: TPanel;
+    btnExcluirCancelar: TSpeedButton;
+    DSPessoas: TDataSource;
+    chkJuridica: TDBCheckBox;
+    procedure DSPessoasStateChange(Sender: TObject);
+    procedure btnInserirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnExcluirCancelarClick(Sender: TObject);
+    procedure chkJuridicaClick(Sender: TObject);
+    procedure DBEdit5KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPessoas: TfrmPessoas;
+
+implementation
+
+{$R *.dfm}
+
+uses udmDados, uLogSistema;
+
+procedure TfrmPessoas.btnExcluirCancelarClick(Sender: TObject);
+begin
+  if DSPessoas.state in [dsInsert, dsEdit] then
+  begin
+    DMDados.QPessoa.cancel;
+    DMDados.QPessoa.Close;
+  end
+  else
+    if not DMDados.QPessoa.IsEmpty then
+      if MessageDlg('Deseja excluir este produto?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+        DMDados.QPessoa.Delete;
+        DMDados.QPessoa.ApplyUpdates;
+        ShowMessage('Cadastro excluído com sucesso!');
+      end;
+end;
+
+procedure TfrmPessoas.btnGravarClick(Sender: TObject);
+var
+  acao: string;
+begin
+  if DMDados.QPessoa.State in [dsInsert, dsEdit] then
+  begin
+    if DMDados.QPessoa.State = dsInsert then
+      acao := 'INSERIR'
+    else
+      acao := 'ALTERAR';
+
+    DMDados.QPessoa.Post;
+    DMDados.QPessoa.ApplyUpdates;
+
+    // Log após salvar
+    GravaLog(DMDados.UsuarioLogado, acao, 'PESSOA',
+             DMDados.QPessoa.FieldByName('ID').AsInteger,
+             'Cadastro de pessoa salvo: ' + DMDados.QPessoa.FieldByName('NOME').AsString);
+
+    ShowMessage('Cadastro salvo com sucesso!');
+  end;
+end;
+
+procedure TfrmPessoas.btnInserirClick(Sender: TObject);
+begin
+  DMDados.QPessoa.Open;
+  DMDados.QPessoa.Append;
+  DMDados.QPessoa.FieldByName('FL_FISICA_JURIDICA').AsBoolean := False;
+  DBEdit2.SetFocus;
+end;
+
+procedure TfrmPessoas.chkJuridicaClick(Sender: TObject);
+begin
+  if not (DMDados.QPessoa.State in [dsEdit, dsInsert]) then
+    DMDados.QPessoa.Edit;
+
+  // força alternar o valor corretamente
+  if chkJuridica.Checked then
+    DMDados.QPessoa.FieldByName('FL_FISICA_JURIDICA').AsBoolean := True
+  else
+    DMDados.QPessoa.FieldByName('FL_FISICA_JURIDICA').AsBoolean := False;
+
+  // aplica máscara conforme o valor
+  if chkJuridica.Checked then
+    DMDados.QPessoaCPF_CNPJ.EditMask := '99.999.999/9999-99;1;_'
+  else
+    DMDados.QPessoaCPF_CNPJ.EditMask := '999.999.999-99;1;_';
+end;
+
+procedure TfrmPessoas.DBEdit5KeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    btnGravarClick(self);
+  end;
+end;
+
+procedure TfrmPessoas.DSPessoasStateChange(Sender: TObject);
+begin
+  if DSPessoas.state in [dsEdit, dsInsert] then
+  begin
+    btnExcluirCancelar.Caption := 'Cancelar';
+    btnInserir.Enabled := False;
+    btnGravar.Enabled := True;
+  end
+  else
+  begin
+    btnExcluirCancelar.caption := 'Excluir';
+    btnInserir.Enabled := True;
+    btnGravar.Enabled := False;
+  end;
+end;
+
+end.

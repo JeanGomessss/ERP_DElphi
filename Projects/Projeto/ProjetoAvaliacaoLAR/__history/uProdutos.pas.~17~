@@ -1,0 +1,109 @@
+unit uProdutos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Vcl.Buttons, Data.DB;
+
+type
+  TfrmProdutos = class(TForm)
+    pnlProdutos: TPanel;
+    lblId: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    pnlInserir: TPanel;
+    btnInserir: TSpeedButton;
+    Panel1: TPanel;
+    btnExcluirCancelar: TSpeedButton;
+    Panel2: TPanel;
+    btnGravar: TSpeedButton;
+    DSProdutos: TDataSource;
+    DBEdit4: TDBEdit;
+    Label3: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure btnInserirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnExcluirCancelarClick(Sender: TObject);
+    procedure DSProdutosStateChange(Sender: TObject);
+    procedure DBEdit3KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProdutos: TfrmProdutos;
+
+implementation
+
+{$R *.dfm}
+
+uses udmDados;
+
+procedure TfrmProdutos.btnInserirClick(Sender: TObject);
+begin
+  DMDados.QProduto.Append;
+  DBEdit2.SetFocus;
+end;
+
+procedure TfrmProdutos.DBEdit3KeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    btnGravarClick(self);
+  end;
+end;
+
+procedure TfrmProdutos.DSProdutosStateChange(Sender: TObject);
+begin
+  if DSProdutos.state in [dsEdit, dsInsert] then
+  begin
+    btnExcluirCancelar.Caption := 'Cancelar';
+    btnInserir.Enabled := False;
+    btnGravar.Enabled := True;
+  end
+  else
+  begin
+    btnExcluirCancelar.caption := 'Excluir';
+    btnInserir.Enabled := True;
+    btnGravar.Enabled := False;
+  end;
+end;
+
+procedure TfrmProdutos.FormCreate(Sender: TObject);
+begin
+  DMDados.QProduto.Open;
+end;
+
+procedure TfrmProdutos.btnExcluirCancelarClick(Sender: TObject);
+begin
+  if DSProdutos.state in [dsInsert, dsEdit] then
+    DMDados.QProduto.cancel
+  else
+    if not DMDados.QProduto.IsEmpty then
+      if MessageDlg('Deseja excluir este produto?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+        DMDados.QProduto.Delete;
+        DMDados.QProduto.ApplyUpdates;
+        ShowMessage('Produto excluído com sucesso!');
+      end;
+end;
+
+procedure TfrmProdutos.btnGravarClick(Sender: TObject);
+begin
+  if DMDados.QProduto.State in [dsInsert, dsEdit] then
+  begin
+    DMDados.QProduto.Post;
+    DMDados.QProduto.ApplyUpdates;
+    ShowMessage('Produto salvo com sucesso!');
+  end;
+end;
+
+end.
