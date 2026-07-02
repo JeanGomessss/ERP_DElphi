@@ -1,4 +1,4 @@
-# ERP_DElphi
+# ERP_Delphi
 Este é um projeto pequeno de um ERP feito em Delphi com Banco de Dados Firebird. 
 
 O projeto conta com 5 forms principais de acesso ao Usuário.
